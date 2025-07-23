@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { FcBriefcase } from "react-icons/fc";
 import { FiMenu, FiX } from "react-icons/fi";
 import Link from "next/link";
@@ -9,6 +9,16 @@ import { useSelector } from "react-redux";
 const Header = () => {
   const { isAuthenticated } = useSelector((state) => state.studentReducer);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleProtectedNav = useCallback(
     (e, path) => {
@@ -39,128 +49,123 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full bg-white shadow-sm sticky top-0 z-50 border-b border-gray-200">
+    <header className={`w-full bg-white sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'shadow-md border-b border-gray-100' : 'border-b border-gray-200'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Desktop Header */}
-        <div className="flex justify-between items-center py-3 md:justify-start md:space-x-10">
+        <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
-          <div className="flex justify-start items-center flex-1">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center flex-shrink-0">
+            <Link href="/" className="flex items-center gap-2">
               <FcBriefcase className="text-3xl" />
-              <h1 className="text-2xl font-bold tracking-tight  text-gray-800">
-                <span className="text-blue-600 inline-block mt-1.5 ">Career</span>Hub
+              <h1 className="text-2xl font-bold text-gray-800">
+                <span className="text-blue-600">Career</span>Hub
               </h1>
-            </div>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={toggleMobileMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-blue-500 no-underline font-medium  hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-              aria-expanded="false"
-            >
-              <span className="sr-only">Open main menu</span>
-              {mobileMenuOpen ? (
-                <FiX className="block h-6 w-6" />
-              ) : (
-                <FiMenu className="block h-6 w-6" />
-              )}
-            </button>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <a
+          <nav className="hidden md:flex items-center space-x-6">
+            <button
               onClick={(e) => handleProtectedNav(e, "/jobs")}
-              className="text-blue-500 no-underline font-medium  hover:text-blue-600 transition-colors duration-200 cursor-pointer"
+              className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
             >
               Jobs / Internships
-            </a>
+            </button>
 
-            <div className="flex items-center gap-1 group cursor-pointer">
-              <span className=" no-underline font-medium  group-hover:text-blue-600 transition-colors duration-200">
+            <button className="flex items-center gap-1 group px-3 py-2">
+              <span className="text-gray-700 group-hover:text-blue-600 font-medium transition-colors duration-200">
                 Online Trainings
               </span>
-              <span className="bg-yellow-500 text-white text-[10px] font-bold px-2 py-[2px] rounded-full shadow-sm">
-                OFFER'S
+              <span className="bg-yellow-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                OFFER
               </span>
-            </div>
+            </button>
 
-            <a
+            <button
               onClick={(e) => handleProtectedNav(e, "/fresher-jobs")}
-              className="text-blue-500 no-underline font-medium  hover:text-blue-600 transition-colors duration-200 cursor-pointer"
+              className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2"
             >
               Fresher Jobs
-            </a>
+            </button>
+
             <Link
               href="/student"
-              className="px-4 py-1.5 rounded-full border border-blue-500 text-blue-600 hover:bg-blue-50 font-medium hover:text-blue-700 transition-all duration-200 text-sm"
-              onClick={() => {
-                sessionStorage.setItem("showStudentToast", "true");
-              }}
+              className="px-4 py-2 rounded-lg border border-blue-500 text-blue-600 hover:bg-blue-50 font-medium transition-all duration-200 text-sm"
             >
               Student
             </Link>
 
             <Link
               href="/employe"
-              className="px-4 py-1.5 rounded-full bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg transition-all duration-200 font-semibold text-sm"
+              className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-medium transition-all duration-200 text-sm shadow-sm hover:shadow-md"
             >
               Employer
             </Link>
           </nav>
-        </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden">
-            <div className="pt-2 pb-3 space-y-1">
-              <a
-                onClick={(e) => {
-                  handleProtectedNav(e, "/jobs");
-                  setMobileMenuOpen(false);
-                }}
-                className="block px-3 py-2 rounded-md text-base font-medium text-blue-500 no-underline  hover:text-blue-600 hover:bg-gray-50 cursor-pointer"
-              >
-                Jobs / Internships
-              </a>
-
-              <div className="flex items-center px-3 py-2 rounded-md text-base font-medium text-blue-500 no-underline hover:bg-gray-50 cursor-pointer">
-                <span className="hover:text-blue-600">Online Trainings</span>
-                <span className="ml-2 bg-yellow-500 text-white text-[10px] font-bold px-2 py-[2px] rounded-full shadow-sm">
-                  OFFER
-                </span>
-              </div>
-
-              <a
-                onClick={(e) => {
-                  handleProtectedNav(e, "/fresher-jobs");
-                  setMobileMenuOpen(false);
-                }}
-                className="block px-3 py-2 rounded-md text-base font-medium text-blue-500 no-underline   hover:text-blue-600 hover:bg-gray-50 cursor-pointer"
-              >
-                Fresher Jobs
-              </a>
-
-              <Link
-                href="/student"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:bg-blue-50"
-              >
-                Student
-              </Link>
-
-              <Link
-                href="/employe"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 rounded-md text-base font-medium text-white bg-blue-600 hover:bg-blue-700"
-              >
-                Employer
-              </Link>
-            </div>
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={toggleMobileMenu}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-expanded="false"
+            >
+              <span className="sr-only">Open main menu</span>
+              {mobileMenuOpen ? (
+                <FiX className="h-6 w-6" />
+              ) : (
+                <FiMenu className="h-6 w-6" />
+              )}
+            </button>
           </div>
-        )}
+        </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      <div className={`md:hidden transition-all duration-300 ease-in-out ${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+        <div className="px-2 pt-2 pb-4 space-y-1 bg-white border-t border-gray-200">
+          <button
+            onClick={(e) => {
+              handleProtectedNav(e, "/jobs");
+              setMobileMenuOpen(false);
+            }}
+            className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+          >
+            Jobs / Internships
+          </button>
+
+          <button className="flex items-center w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">
+            <span>Online Trainings</span>
+            <span className="ml-2 bg-yellow-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              OFFER
+            </span>
+          </button>
+
+          <button
+            onClick={(e) => {
+              handleProtectedNav(e, "/fresher-jobs");
+              setMobileMenuOpen(false);
+            }}
+            className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+          >
+            Fresher Jobs
+          </button>
+
+          <Link
+            href="/student"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:bg-blue-50"
+          >
+            Student
+          </Link>
+
+          <Link
+            href="/employe"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 rounded-md text-base font-medium text-white bg-blue-600 hover:bg-blue-700"
+          >
+            Employer
+          </Link>
+        </div>
       </div>
     </header>
   );
