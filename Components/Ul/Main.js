@@ -65,7 +65,7 @@ const Main = () => {
           {imageData.map((item, idx) => (
             <div
               key={idx}
-              className="relative group overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 h-[380px]"
+              className="relative group overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 h-auto min-h-[340px] flex flex-col"
               onMouseEnter={() => setHoveredCard(idx)}
               onMouseLeave={() => setHoveredCard(null)}
             >
@@ -80,6 +80,7 @@ const Main = () => {
                   }`}
                   quality={80}
                   priority={idx === 0}
+                  style={{ objectPosition: "center" }}
                 />
               </div>
 
@@ -87,14 +88,14 @@ const Main = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
               {/* Text Content */}
-              <div className="relative h-full flex flex-col justify-end p-6 text-white z-10">
+              <div className="relative flex-1 flex flex-col justify-end p-4 md:p-6 text-white z-10">
                 <div
                   className={`transition-all duration-500 ${
                     hoveredCard === idx ? "translate-y-0" : "translate-y-8"
                   }`}
                 >
-                  <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
-                  <p className="mb-4 opacity-90 text-sm md:text-base">{item.description}</p>
+                  <h3 className="text-2xl font-bold mb-2 break-words">{item.title}</h3>
+                  <p className="mb-4 opacity-90 text-sm md:text-base break-words">{item.description}</p>
                 </div>
 
                 {/* Button */}
