@@ -69,58 +69,69 @@ const Main = () => {
           {careerCards.map((card, index) => (
             <div 
               key={index}
-              className={`relative group rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 h-80 md:h-96 border-t-4 ${card.textColor.replace('text-', 'border-')}`}
+              className={`relative group rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-500 ease-out h-80 md:h-96 border-t-4 ${card.textColor.replace('text-', 'border-')}`}
               onMouseEnter={() => setActiveCard(index)}
               onMouseLeave={() => setActiveCard(null)}
             >
-              {/* Image Container */}
-              <div className="absolute inset-0 w-full h-full">
+              {/* Image Container with Smoother Zoom */}
+              <div className="absolute inset-0 w-full h-full overflow-hidden">
                 <Image
                   src={card.src}
                   alt={card.alt}
                   fill
-                  className={`object-cover transition-transform duration-500 ${activeCard === index ? "scale-105" : "scale-100"}`}
-                  quality={85}
+                  className={`object-cover transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeCard === index ? "scale-110" : "scale-100"}`}
+                  quality={90}
                   priority={index === 0}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
 
               {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent transition-opacity duration-500" />
 
-              {/* Content */}
+              {/* Content with Smoother Transitions */}
               <div className="relative h-full flex flex-col justify-end p-4 md:p-6 text-white">
-                <div className={`transition-all duration-500 ${activeCard === index ? "translate-y-0" : "translate-y-4"}`}>
+                <div 
+                  className={`transform transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                    activeCard === index 
+                      ? "translate-y-0 opacity-100" 
+                      : "translate-y-6 opacity-90"
+                  }`}
+                >
                   <h3 className="text-xl md:text-2xl font-bold mb-2">{card.title}</h3>
                   <p className="text-sm md:text-base text-gray-200 mb-4">{card.description}</p>
                 </div>
 
                 <button
                   onClick={(e) => handleAuthAction(e, "/student")}
-                  className={`w-full flex items-center justify-center bg-white ${card.textColor} py-2 md:py-3 px-4 rounded-lg font-medium transition-all duration-300 ${
-                    activeCard === index ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
-                  } hover:bg-opacity-90`}
+                  className={`w-full flex items-center justify-center bg-white ${card.textColor} py-2 md:py-3 px-4 rounded-lg font-medium transition-all duration-500 ease-out ${
+                    activeCard === index 
+                      ? "opacity-100 translate-y-0 hover:scale-[1.02] hover:shadow-sm" 
+                      : "opacity-0 translate-y-5 pointer-events-none"
+                  }`}
                 >
                   {card.cta}
-                  <FiArrowRight className="ml-2" />
+                  <FiArrowRight className={`ml-2 transition-transform duration-300 ${activeCard === index ? "group-hover:translate-x-1" : ""}`} />
                 </button>
               </div>
             </div>
           ))}
         </div>
 
-        {/* CTA Section */}
+        {/* CTA Section with Enhanced Button */}
         <div className="text-center">
           <div className="max-w-2xl mx-auto bg-gray-50 rounded-xl p-6 md:p-8 mb-8 md:mb-12">
             <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-3 md:mb-4">Ready to accelerate your career?</h3>
             <p className="text-gray-600 mb-4 md:mb-6">Join 10,000+ professionals who transformed their careers with us</p>
             <button
               onClick={(e) => handleAuthAction(e, "/student")}
-              className="inline-flex items-center px-6 md:px-8 py-2 md:py-3 bg-blue-600 text-white font-medium md:font-bold rounded-lg text-base md:text-lg transition-colors duration-300 hover:bg-blue-700"
+              className="group inline-flex items-center px-6 md:px-8 py-2 md:py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium md:font-bold rounded-lg text-base md:text-lg transition-all duration-500 ease-out hover:from-blue-700 hover:to-blue-600 hover:shadow-lg"
             >
-              Get Started
-              <FiArrowRight className="ml-2" />
+              <span className="relative inline-block overflow-hidden">
+                <span className="block transition-transform duration-500 group-hover:-translate-y-6">Get Started</span>
+                <span className="absolute left-0 top-6 block w-full text-center transition-transform duration-500 group-hover:-translate-y-6">Let's Go!</span>
+              </span>
+              <FiArrowRight className="ml-2 transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110" />
             </button>
           </div>
         </div>
