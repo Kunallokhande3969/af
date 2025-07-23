@@ -18,8 +18,7 @@ const imageData = [
     src: "https://d3atms9ic4lahi.cloudfront.net/banner-images/home_new/exp_hiring-student.png.webp",
     alt: "Experienced Hiring",
     title: "AI in Market Leadership",
-    description:
-      "Fast-track your career with dream roles & salaries up to 73 LPA",
+    description: "Fast-track your career with dream roles & salaries up to 73 LPA",
     cta: "Apply now",
   },
   {
@@ -50,18 +49,18 @@ const Main = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Main Content */}
       <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        {/* Title */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            Make Your <span className="text-blue-600">Dream Career</span> A
-            Reality
+            Make Your <span className="text-blue-600">Dream Career</span> A Reality
           </h2>
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
             Discover opportunities that align with your aspirations and skills
           </p>
         </div>
 
+        {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {imageData.map((item, idx) => (
             <div
@@ -70,6 +69,7 @@ const Main = () => {
               onMouseEnter={() => setHoveredCard(idx)}
               onMouseLeave={() => setHoveredCard(null)}
             >
+              {/* Background Image */}
               <div className="absolute inset-0 w-full h-full">
                 <Image
                   src={item.src}
@@ -83,8 +83,10 @@ const Main = () => {
                 />
               </div>
 
+              {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
+              {/* Text Content */}
               <div className="relative h-full flex flex-col justify-end p-6 text-white z-10">
                 <div
                   className={`transition-all duration-500 ${
@@ -92,11 +94,10 @@ const Main = () => {
                   }`}
                 >
                   <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
-                  <p className="mb-4 opacity-90 text-sm md:text-base">
-                    {item.description}
-                  </p>
+                  <p className="mb-4 opacity-90 text-sm md:text-base">{item.description}</p>
                 </div>
 
+                {/* Button */}
                 <button
                   onClick={(e) => handleProtectedNav(e, "/student")}
                   className={`inline-flex items-center font-medium bg-white text-gray-900 px-5 py-2 rounded-full transition-all duration-300 ${
@@ -112,6 +113,7 @@ const Main = () => {
           ))}
         </div>
 
+        {/* CTA Button */}
         <div className="text-center">
           <button
             onClick={(e) => handleProtectedNav(e, "/student")}
